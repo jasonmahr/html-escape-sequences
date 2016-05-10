@@ -5,7 +5,7 @@ recognizes decimal, hexadecimal and non-digit escape sequences.
 @docs unEsc, text', txt
 -}
 
-import Handlers exposing (handleEscapes)
+import Handlers exposing (handleAllEscapes)
 import Html exposing (Html, text)
 
 
@@ -15,10 +15,10 @@ import Html exposing (Html, text)
 -}
 unEsc : String -> String
 unEsc =
-  handleEscapes
+  handleAllEscapes
 
 
-{-| unEsc >> Html.text
+{-| Unescapes a string and then invokes `Html.text` on the result.
 
     Html.text "© &copy; &#169;"  -- renders © &copy; &#169; to the page
     text'     "© &copy; &#169;"  -- renders © © ©
@@ -28,7 +28,7 @@ text' =
   unEsc >> text
 
 
-{-| An alternate name that avoids apostrophes.
+{-| Alias for `text'` that avoids apostrophes.
 -}
 txt : String -> Html
 txt =

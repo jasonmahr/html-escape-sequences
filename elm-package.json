@@ -1,6 +1,6 @@
 {
-    "version": "1.0.2",
-    "summary": "Use escape codes with elm-lang/html. Supports all of Unicode. Elm 0.16? v1.0.1.",
+    "version": "2.0.0",
+    "summary": "Use escape codes with elm-lang/html. Supports all of Unicode. Elm 0.16? Use v1.",
     "repository": "https://github.com/jasonmahr/html-escape-sequences.git",
     "license": "MIT",
     "source-directories": [

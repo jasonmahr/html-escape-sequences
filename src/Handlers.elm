@@ -1,65 +1,54 @@
-module Handlers (handleEscapes) where
+module Handlers (handleAllEscapes) where
 
-{-| The handleEscapes function used in Unicode.elm is defined here.
+{-| The handleAllEscapes function used in Unicode.elm is defined here.
 -}
 
-import Char exposing (fromCode)
-import Dict exposing (foldl)
-import NonDigitEscapes exposing (nonDigitEscapes)
-import ParseInt exposing (parseIntHex)
+import Char exposing (fromCode, isUpper, toCode)
+import Dict exposing (get)
+import NamedEscapes exposing (namedEscapes)
 import Regex exposing (Match, regex, replace)
-import String exposing (fromChar, join, slice, split, toInt)
+import String exposing (fromChar, toUpper, slice, toInt)
 
 
-handleEscapes : String -> String
-handleEscapes =
-  handleNonDigitEscapes >> handleHexEscapes >> handleDecEscapes
-
-
-handleNonDigitEscapes : String -> String
-handleNonDigitEscapes str =
-  Dict.foldl (\esc glyph s -> join glyph <| split esc s) str nonDigitEscapes
+handleAllEscapes : String -> String
+handleAllEscapes =
+  handleHexEscapes >> handleDecEscapes >> handleNamedEscapes
 
 
 handleHexEscapes : String -> String
 handleHexEscapes =
-  replace Regex.All (regex "&#x[0-9a-fA-F]*;") handleHexEscape
+  handleEscapes "&#x[0-9a-fA-F]*;" 3 (toUpper >> hexToInt >> Maybe.Just)
 
 
-handleHexEscape : Match -> String
-handleHexEscape m =
+handleEscapes : String -> Int -> (String -> Maybe Int) -> String -> String
+handleEscapes str startInd escToCode =
+  replace Regex.All (regex str) <| handleEscape (slice startInd -1 >> escToCode)
+
+
+handleEscape : (String -> Maybe Int) -> Match -> String
+handleEscape toCode m =
+  Maybe.withDefault m.match <| Maybe.map (fromCode >> fromChar) (toCode m.match)
+
+
+{-| Error checking superfluous since all strings passed in match \[0-9A-F]*\.
+-}
+hexToInt : String -> Int
+hexToInt =
   let
-    hexEsc =
-      m.match
-
-    dec =
-      Result.toMaybe <| parseIntHex <| slice 3 -1 hexEsc
+    charToInt c =
+      if isUpper c then
+        toCode c - 55
+      else
+        toCode c - 48
   in
-    case dec of
-      Just code ->
-        fromChar (fromCode code)
-
-      Nothing ->
-        hexEsc
+    String.foldl (\c int -> int * 16 + charToInt c) 0
 
 
 handleDecEscapes : String -> String
 handleDecEscapes =
-  replace Regex.All (regex "&#[0-9]*;") handleDecEscape
+  handleEscapes "&#[0-9]*;" 2 (toInt >> Result.toMaybe)
 
 
-handleDecEscape : Match -> String
-handleDecEscape m =
-  let
-    decEsc =
-      m.match
-
-    dec =
-      Result.toMaybe <| toInt <| slice 2 -1 <| decEsc
-  in
-    case dec of
-      Just code ->
-        fromChar (fromCode code)
-
-      Nothing ->
-        decEsc
+handleNamedEscapes : String -> String
+handleNamedEscapes =
+  handleEscapes "&[a-zA-Z]*;" 1 (flip get namedEscapes)

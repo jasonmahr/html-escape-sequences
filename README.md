@@ -8,4 +8,4 @@ Supports all Unicode characters and recognizes decimal, hexadecimal and non-digi
 
 No more hunting around for Unicode symbols! Also useful when fetching escaped Unicode entities from an API.
 
-This version works with Elm version 0.16.
+This version (1.0.1) works with Elm version 0.16.

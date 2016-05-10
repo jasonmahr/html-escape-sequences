@@ -1,6 +1,6 @@
 # html-escape-sequences
 
-Use HTML escape sequences with elm-html.
+Use HTML escape sequences with elm-lang/html.
 
 Just replace `Html.text` with the included `text'` function.
 
@@ -8,4 +8,4 @@ Supports all Unicode characters and recognizes decimal, hexadecimal and non-digi
 
 No more hunting around for Unicode symbols! Also useful when fetching escaped Unicode entities from an API.
 
-This version (1.0.1) works with Elm version 0.16.
+Updated for Elm version 0.17. Version 1.0.1 is compatible with Elm version 0.16.

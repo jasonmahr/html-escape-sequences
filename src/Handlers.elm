@@ -1,4 +1,4 @@
-module Handlers (handleAllEscapes) where
+module Handlers exposing (handleAllEscapes)
 
 {-| The handleAllEscapes function used in Unicode.elm is defined here.
 -}

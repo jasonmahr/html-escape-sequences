@@ -1,4 +1,4 @@
-module NonDigitEscapes (getNonDigitEscape) where
+module NonDigitEscapes exposing (getNonDigitEscape)
 
 {-| The getNonDigitEscape function used in Handlers.elm is defined here.
 -}

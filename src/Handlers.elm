@@ -1,35 +1,36 @@
 module Handlers exposing (handleAllEscapes)
 
-{-| The handleAllEscapes function used in Unicode.elm is defined here.
--}
-
 import Char exposing (fromCode, isUpper, toCode)
-import NonDigitEscapes exposing (getNonDigitEscape)
+import NamedEscapes exposing (getNamedEscape, getSubmatch)
 import Regex exposing (Match, regex, replace)
-import String exposing (fromChar, toUpper, slice, toInt)
+import String exposing (foldl, fromChar, toUpper, toInt)
 
 
 handleAllEscapes : String -> String
 handleAllEscapes =
-  handleHexEscapes >> handleDecEscapes >> handleNonDigitEscapes
+  handleHexEscapes >> handleDecEscapes >> handleNamedEscapes
 
 
 handleHexEscapes : String -> String
 handleHexEscapes =
-  handleEscapes "&#x[0-9a-fA-F]*;" 3 (toUpper >> hexToInt >> Maybe.Just)
+  handleMatches "&#x([0-9a-fA-F]+);" (hexToInt >> Just)
 
 
-handleEscapes : String -> Int -> (String -> Maybe Int) -> String -> String
-handleEscapes str startInd escToCode =
-  replace Regex.All (regex str) <| handleEscape (slice startInd -1 >> escToCode)
+handleMatches : String -> (String -> Maybe Int) -> String -> String
+handleMatches regEx escToCode =
+  replace Regex.All (regex regEx) (handleMatch escToCode)
 
 
-handleEscape : (String -> Maybe Int) -> Match -> String
-handleEscape toCode m =
-  Maybe.withDefault m.match <| Maybe.map (fromCode >> fromChar) (toCode m.match)
+handleMatch : (String -> Maybe Int) -> Match -> String
+handleMatch submatchToCode m =
+  let
+    codeToGlyph =
+      Maybe.map (fromCode >> fromChar)
+  in
+    Maybe.withDefault m.match <| codeToGlyph <| submatchToCode <| getSubmatch m
 
 
-{-| Error checking superfluous since all strings passed in match \[0-9A-F]*\.
+{-| Error checking superfluous since all strings passed in match \[0-9a-fA-F]+\.
 -}
 hexToInt : String -> Int
 hexToInt =
@@ -40,14 +41,14 @@ hexToInt =
       else
         toCode c - 48
   in
-    String.foldl (\c int -> int * 16 + charToInt c) 0
+    toUpper >> foldl (\c int -> int * 16 + charToInt c) 0
 
 
 handleDecEscapes : String -> String
 handleDecEscapes =
-  handleEscapes "&#[0-9]*;" 2 (toInt >> Result.toMaybe)
+  handleMatches "&#([0-9]+);" (toInt >> Result.toMaybe)
 
 
-handleNonDigitEscapes : String -> String
-handleNonDigitEscapes =
-  handleEscapes "&[a-zA-Z]*;" 1 getNonDigitEscape
+handleNamedEscapes : String -> String
+handleNamedEscapes =
+  handleMatches "&([0-9a-zA-Z]+);" getNamedEscape

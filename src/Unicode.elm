@@ -1,7 +1,7 @@
 module Unicode exposing (text', txt, unEsc)
 
-{-| Use HTML escape sequences with elm-html. Supports all Unicode characters and
-recognizes decimal, hexadecimal and non-digit escape sequences.
+{-| Use HTML escape sequences with elm-lang/html. Supports all Unicode
+characters and recognizes decimal, hexadecimal and named escape sequences.
 @docs unEsc, text', txt
 -}
 

@@ -1,4 +1,4 @@
-module NamedEscapes (getNamedEscape, getSubmatch) where
+module NamedEscapes exposing (getNamedEscape, getSubmatch)
 
 import Dict exposing (Dict, fromList, get)
 import Regex exposing (Match, find, regex)

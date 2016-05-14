@@ -1,4 +1,4 @@
-module Handlers (handleAllEscapes) where
+module Handlers exposing (handleAllEscapes)
 
 import Char exposing (fromCode, isUpper, toCode)
 import NamedEscapes exposing (getNamedEscape, getSubmatch)

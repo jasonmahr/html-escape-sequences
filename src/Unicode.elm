@@ -1,4 +1,4 @@
-module Unicode exposing (text', txt, unEsc)
+module Unicode (text', txt, unEsc) where
 
 {-| Use HTML escape sequences with elm-lang/html. Supports all Unicode
 characters and recognizes decimal, hexadecimal and named escape sequences.
@@ -23,13 +23,13 @@ unEsc =
     Html.text "© &copy; &#169;"  -- renders © &copy; &#169; to the page
     text'     "© &copy; &#169;"  -- renders © © ©
 -}
-text' : String -> Html msg
+text' : String -> Html
 text' =
   unEsc >> text
 
 
 {-| Alias for `text'` that avoids apostrophes.
 -}
-txt : String -> Html msg
+txt : String -> Html
 txt =
   text'

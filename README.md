@@ -1,6 +1,6 @@
 # html-escape-sequences
 
-Use HTML escape sequences with evancz/elm-html.
+Use HTML escape sequences with elm-lang/html.
 
 Just replace `Html.text` with the included `text'` function.
 

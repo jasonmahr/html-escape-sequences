@@ -17,7 +17,7 @@ namedEscapes =
 
 hasNumsList : List ( String, Int )
 hasNumsList =
-  toList "([a-zA-Z]+[0-9]+),([0-9]+)" hasNums
+  toList "([a-zA-Z]+[0-9]+)([0-9]{4})" hasNums
 
 
 toList : String -> String -> List ( String, Int )
@@ -52,7 +52,7 @@ getHeadSubmatch =
 
 hasNums : String
 hasNums =
-  "sup2,178sup3,179sup1,185frac14,188frac12,189frac34,190emsp13,8196emsp14,8197frac13,8531frac23,8532frac15,8533frac25,8534frac35,8535frac45,8536frac16,8537frac56,8538frac18,8539frac38,8540frac58,8541frac78,8542there4,8756blk14,9617blk12,9618blk34,9619"
+  "sup20178sup30179sup10185frac140188frac120189frac340190emsp138196emsp148197frac138531frac238532frac158533frac258534frac358535frac458536frac168537frac568538frac188539frac388540frac588541frac788542there48756blk149617blk129618blk349619"
 
 
 noNumsList : List ( String, Int )

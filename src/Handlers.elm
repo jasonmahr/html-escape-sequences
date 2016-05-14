@@ -13,16 +13,16 @@ handleAllEscapes =
 
 handleHexEscapes : String -> String
 handleHexEscapes =
-  handleMatches "&#x([0-9a-fA-F]+);" (hexToInt >> Just)
+  handleEscapes "&#x([0-9a-fA-F]+);" (hexToInt >> Just)
 
 
-handleMatches : String -> (String -> Maybe Int) -> String -> String
-handleMatches regEx escToCode =
-  replace Regex.All (regex regEx) (handleMatch escToCode)
+handleEscapes : String -> (String -> Maybe Int) -> String -> String
+handleEscapes regEx escSequenceToCode =
+  replace Regex.All (regex regEx) (handleEscape escSequenceToCode)
 
 
-handleMatch : (String -> Maybe Int) -> Match -> String
-handleMatch submatchToCode m =
+handleEscape : (String -> Maybe Int) -> Match -> String
+handleEscape submatchToCode m =
   let
     codeToGlyph =
       Maybe.map (fromCode >> fromChar)
@@ -46,9 +46,9 @@ hexToInt =
 
 handleDecEscapes : String -> String
 handleDecEscapes =
-  handleMatches "&#([0-9]+);" (toInt >> Result.toMaybe)
+  handleEscapes "&#([0-9]+);" (toInt >> Result.toMaybe)
 
 
 handleNamedEscapes : String -> String
 handleNamedEscapes =
-  handleMatches "&([0-9a-zA-Z]+);" getNamedEscape
+  handleEscapes "&([0-9a-zA-Z]+);" getNamedEscape

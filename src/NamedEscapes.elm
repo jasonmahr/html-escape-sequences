@@ -1,4 +1,4 @@
-module NamedEscapes (codeToStr, getNamedEscape, subm, regexAll) where
+module NamedEscapes exposing (codeToStr, getNamedEscape, subm, regexAll)
 
 import Char exposing (fromCode, toCode)
 import Dict exposing (Dict, fromList, get)

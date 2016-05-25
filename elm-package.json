@@ -1,5 +1,5 @@
 {
-    "version": "1.0.4",
+    "version": "1.0.5",
     "summary": "Use decimal, hex and named escapes with elm-lang/html. Supports all of Unicode.",
     "repository": "https://github.com/jasonmahr/html-escape-sequences.git",
     "license": "MIT",

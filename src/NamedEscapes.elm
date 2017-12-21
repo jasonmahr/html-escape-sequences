@@ -75,7 +75,7 @@ uncompress str =
             map (\c -> fromCode (toCode c - 390))
 
         bToZ =
-            List.map codeToStr [98..122]
+            List.map codeToStr (List.range 98 122)
 
         expand =
             regexAll replace "!(.{3,4})!" (flip join bToZ << subm)

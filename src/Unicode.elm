@@ -1,8 +1,8 @@
-module Unicode exposing (text', txt, unEsc)
+module Unicode exposing (text_, txt, unEsc)
 
 {-| Use HTML escape sequences with elm-lang/html. Supports all Unicode
 characters and recognizes decimal, hexadecimal and named escape sequences.
-@docs unEsc, text', txt
+@docs unEsc, text_, txt
 -}
 
 import Handlers exposing (handleEscapes)
@@ -21,10 +21,10 @@ unEsc =
 {-| Unescapes a string and then invokes `Html.text` on the result.
 
     Html.text "© &copy; &#169;"  -- renders © &copy; &#169; to the page
-    text'     "© &copy; &#169;"  -- renders © © ©
+    text_     "© &copy; &#169;"  -- renders © © ©
 -}
-text' : String -> Html msg
-text' =
+text_ : String -> Html msg
+text_ =
     text << unEsc
 
 
@@ -32,4 +32,4 @@ text' =
 -}
 txt : String -> Html msg
 txt =
-    text'
+    text_
